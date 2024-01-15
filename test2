@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Configuración del servidor FTP (vsftpd)
+sudo apt update
+sudo apt install -y vsftpd
+
+# Configuración del archivo vsftpd.conf
+sudo bash -c 'cat <<EOL > /etc/vsftpd.conf
+anonymous_enable=NO
+local_enable=YES
+write_enable=YES
+chroot_local_user=YES
+local_root=/home/ftp
+EOL'
+
+# Reiniciar el servicio vsftpd
+sudo service vsftpd restart
+
+# Crear usuario y directorio FTP
+FTP_USER="alejandro"
+FTP_PASSWORD="tu_contraseña"
+
+sudo useradd -m -d /home/ftp/$FTP_USER -s /bin/bash $FTP_USER
+echo "$FTP_USER:$FTP_PASSWORD" | sudo chpasswd
+
+# Cambiar permisos del directorio FTP
+sudo chmod 755 /home/ftp/$FTP_USER
+sudo chown $FTP_USER:$FTP_USER /home/ftp/$FTP_USER
+
+# Instalar FileZilla (cliente FTP)
+sudo apt install -y filezilla
+
+# Comprobar si FileZilla está instalado correctamente
+filezilla --version
+
+# Ejecutar FileZilla
+filezilla
+
+# Fin del script
