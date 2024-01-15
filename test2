@@ -18,7 +18,7 @@ sudo service vsftpd restart
 
 # Crear usuario y directorio FTP
 FTP_USER="alejandro"
-FTP_PASSWORD="tu_contraseña"
+FTP_PASSWORD="123456"
 
 sudo useradd -m -d /home/ftp/$FTP_USER -s /bin/bash $FTP_USER
 echo "$FTP_USER:$FTP_PASSWORD" | sudo chpasswd
