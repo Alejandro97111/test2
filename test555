@@ -1,0 +1,29 @@
+#!/bin/bash
+
+sudo apt update
+sudo apt install -y vsftpd
+
+sudo bash -c 'cat <<EOL > /etc/vsftpd.conf
+anonymous_enable=NO
+local_enable=YES
+write_enable=YES
+chroot_local_user=YES
+local_root=/home/ftp
+EOL'
+
+sudo service vsftpd restart
+
+FTP_USER="alejandro"
+FTP_PASSWORD="123456"
+
+sudo useradd -m -d /home/ftp/$FTP_USER -s /bin/bash $FTP_USER
+echo "$FTP_USER:$FTP_PASSWORD" | sudo chpasswd
+
+sudo chmod 755 /home/ftp/$FTP_USER
+sudo chown $FTP_USER:$FTP_USER /home/ftp/$FTP_USER
+
+sudo apt install -y filezilla
+
+filezilla --version
+
+filezilla
